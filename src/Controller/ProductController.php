@@ -125,13 +125,66 @@ class ProductController
     
     public function import()
     {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['csv_file'])) {
+            $file = $_FILES['csv_file']['tmp_name'];
+
+            if (($handle = fopen($file, 'r')) !== false) {
+                fgetcsv($handle, 1000, ',');
+
+                while (($row = fgetcsv($handle, 1000, ',')) !== false) {
+                    if (count($row) < 5 || empty($row[0]) || empty($row[2])) {
+                        continue;
+                    }
+
+                    $data = [
+                        'name' => $row[0],
+                        'description' => $row[1] ?? '',
+                        'price' => $row[2],
+                        'category_id' => $row[3] ?? null,
+                        'image_url' => $row[4] ?? null,
+                    ];
+
+                    $this->repository->create($data);
+                }
+
+                fclose($handle);
+            }
+            header('Location: /index.php?action=list');
+            exit();
+        }
+
         $this->render('import_form');
     }
 
     public function export()
     {
-        header('Content-Type: text/plain');
-        echo "Функционал экспорта должен быть реализован здесь.";
+        $filters = [
+            'name' => $_GET['search_name'] ?? null,
+            'category_id' => $_GET['search_category'] ?? null,
+        ];
+
+        $products = $this->repository->findAll($filters);
+
+        header('Content-Type: text/csv; charset=utf-8');
+        header('Content-Disposition: attachment; filename="products.csv"');
+
+        $output = fopen('php://output', 'w');
+
+        fputcsv($output, ['ID', 'Название', 'Описание', 'Цена', 'Категория', 'URL изображения']);
+
+        foreach ($products as $product) {
+            fputcsv($output, [
+                $product['id'],
+                $product['name'],
+                $product['description'],
+                $product['price'],
+                $product['category_name'] ?? '',
+                $product['image_url'] ?? '',
+            ]);
+        }
+
+        fclose($output);
+        
         exit();
     }
 

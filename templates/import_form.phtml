@@ -3,7 +3,7 @@
 </div>
 <div class="form-container">
     <p>Файл CSV должен содержать колонки в следующем порядке: `name`, `description`, `price`, `category_id`, `image_url`</p>
-    <form action="/index.php?action=import" method="post" enctype="multipart/form-data">
+    <form action="/index.php?action=import" method="POST" enctype="multipart/form-data">
         <div class="form-group">
             <label for="csv_file">Выберите файл CSV:</label>
             <input type="file" name="csv_file" id="csv_file" accept=".csv" required>

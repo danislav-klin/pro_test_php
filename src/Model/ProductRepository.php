@@ -86,14 +86,15 @@ class ProductRepository
     public function create($data) 
     {
         $stmt = $this->pdo->prepare("
-            INSERT INTO products (name, description, price, category_id)
-            VALUES (:name, :description, :price, :category_id)
+            INSERT INTO products (name, description, price, category_id, image_url)
+            VALUES (:name, :description, :price, :category_id, :image_url)
         ");
         $stmt->execute([
             ':name' => $data['name'],
             ':description' => $data['description'],
             ':price' => $data['price'],
-            ':category_id' => $data['category_id']
+            ':category_id' => $data['category_id'],
+            ':image_url'   => $data['image_url'],
         ]);
         
 
