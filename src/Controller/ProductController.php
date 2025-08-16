@@ -62,12 +62,25 @@ class ProductController
 
     public function edit($id)
     {
-        $product = [];
+        $product = $this->repository->findById($id);
         $categories = $this->repository->findAllCategories();
         $this->render('edit_product', [
             'product' => $product,
             'categories' => $categories
         ]);
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $data = [
+            'name' => $_POST['name'],
+            'description' => $_POST['description'],
+            'price' => $_POST['price'],
+            'category_id' => $_POST['category_id']
+        ];
+
+        $this->repository->update($id, $data);
+        header('Location: /index.php?action=list');
+        exit;
+    }
     }
     
     public function delete($id)

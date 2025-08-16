@@ -52,6 +52,21 @@ class ProductRepository
         return $stmt->execute([$id]);
     }
 
+    public function update($id, $data) 
+    {
+        $stmt = $this->pdo->prepare("
+        UPDATE products 
+        SET name = :name, description = :description, price = :price, category_id = :category_id
+        WHERE id = :id");
+
+        return $stmt->execute([
+            ':id' => $id,
+            ':name' => $data['name'],
+            ':description' => $data['description'],
+            ':price' => $data['price'],
+            ':category_id' => $data['category_id']
+        ]);
+    }
     
 
 }
