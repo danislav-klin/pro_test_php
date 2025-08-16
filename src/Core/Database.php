@@ -15,7 +15,7 @@ class Database
             $db_host = 'localhost';
             $db_name = 'pro_ecommerce';
             $db_user = 'root';
-            $db_pass = '';
+            $db_pass = 'root';
 
             try {
                 self::$pdo = new PDO("mysql:host=$db_host;dbname=$db_name;charset=utf8", $db_user, $db_pass);

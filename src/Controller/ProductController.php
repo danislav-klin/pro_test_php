@@ -72,6 +72,9 @@ class ProductController
     
     public function delete($id)
     {
+        if ($id) {
+            $this->repository->deleteById($id);
+        }
         header('Location: /index.php?action=list');
         exit();
     }
