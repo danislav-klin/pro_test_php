@@ -44,7 +44,8 @@ class ProductRepository
     
     public function findAllCategories()
     {
-        $stmt = $this->pdo->query("SELECT * FROM categories ORDER BY name ASC");
+        $stmt = $this->pdo->prepare("SELECT * FROM categories ORDER BY name ASC");
+        $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     

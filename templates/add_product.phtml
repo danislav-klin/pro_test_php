@@ -19,7 +19,7 @@
             <label for="category_id">Категория</label>
             <select name="category_id" id="category_id">
                 <?php foreach ($categories as $category): ?>
-                    <option value="<?= $category['id'] ?>"><?= htmlspecialchars($category['name']) ?></option>
+                    <option value="<?= htmlspecialchars($category['id']) ?>"><?= htmlspecialchars($category['name']) ?></option>
                 <?php endforeach; ?>
             </select>
         </div>

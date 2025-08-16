@@ -25,6 +25,8 @@ switch ($action) {
     case 'export':
         $controller->export();
         break;
+    case 'show':
+        $controller->show($id);
     default:
         $controller->list();
         break;

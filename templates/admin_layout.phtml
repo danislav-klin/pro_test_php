@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title><?= $seo['title'] ?? 'Админ-панель' ?></title>
-    <meta name="description" content="<?= $seo['description'] ?? 'Управление продуктами' ?>">
+    <title><?= htmlspecialchars($seo['title'] ?? 'Админ-панель') ?></title>
+    <meta name="description" content="<?= htmlspecialchars($seo['description'] ?? 'Управление продуктами') ?>">
     
     
     <link rel="stylesheet" href="assets/style.css">
