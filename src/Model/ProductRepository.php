@@ -20,11 +20,25 @@ class ProductRepository
                 FROM products p 
                 LEFT JOIN categories c ON p.category_id = c.id";
         
-        if (!empty($filters['name'])) {
-            $sql .= " WHERE p.name LIKE '%" . $filters['name'] . "%'";
+        $where  = [];
+        $params = [];
+        
+         if (!empty($filters['name'])) {
+            $where[] = "p.name LIKE :name";
+            $params[':name'] = '%' . $filters['name'] . '%';
+        }
+
+        if (!empty($filters['category_id'])) {
+            $where[] = "p.category_id = :category_id";
+            $params[':category_id'] = (int)$filters['category_id'];
+        }
+
+        if ($where) {
+            $sql .= ' WHERE ' . implode(' AND ', $where);
         }
         
-        $stmt = $this->pdo->query($sql);
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($params);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     
