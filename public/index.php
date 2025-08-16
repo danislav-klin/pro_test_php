@@ -27,6 +27,10 @@ switch ($action) {
         break;
     case 'show':
         $controller->show($id);
+        break;
+    case 'sitemap':
+        $controller->sitemap();
+        break;
     default:
         $controller->list();
         break;

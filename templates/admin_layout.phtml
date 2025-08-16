@@ -7,6 +7,12 @@
     <title><?= htmlspecialchars($seo['title'] ?? 'Админ-панель') ?></title>
     <meta name="description" content="<?= htmlspecialchars($seo['description'] ?? 'Управление продуктами') ?>">
     
+    <!-- Open Graph -->
+<meta property="og:title" content="<?= htmlspecialchars($seo['title'] ?? '') ?>">
+<meta property="og:description" content="<?= htmlspecialchars($seo['description'] ?? '') ?>">
+<meta property="og:image" content="<?= htmlspecialchars($seo['image'] ?? '') ?>">
+<meta property="og:url" content="<?= htmlspecialchars($seo['url'] ?? '') ?>">
+<meta property="og:type" content="product">
     
     <link rel="stylesheet" href="assets/style.css">
     

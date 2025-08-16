@@ -24,7 +24,7 @@ class ProductController
         $categories = $this->repository->findAllCategories();
         
         $seo_data = [
-            'title' => 'Админ-панель',
+            'title' => 'Наш Каталог Продуктов - ProShop',
             'description' => 'Управление продуктами'
         ];
         
@@ -34,6 +34,7 @@ class ProductController
             'filters' => $filters,
             'seo' => $seo_data
         ]);
+
     }
 
     public function show($id)
@@ -46,7 +47,12 @@ class ProductController
             exit;
         }
 
-        $seo_data = [];
+        $seo_data = [
+            'title' => $product['name'] . ' - ' . $product['category_name'] . ' | ProShop',
+            'description' => mb_substr(strip_tags($product['description']), 0, 150),
+            'image' => $product['image_url'] ?? '/assets/default.png',
+            'url' => 'http://localhost/index.php?action=show&id=' . $product['id']
+        ];
 
         $this->render('product_detail', [
             'product' => $product,
@@ -184,14 +190,30 @@ class ProductController
         }
 
         fclose($output);
-        
+
         exit();
     }
 
     public function sitemap()
     {
+        $products = $this->repository->findAll();
+
         header('Content-Type: application/xml; charset=utf-8');
+
         echo '<?xml version="1.0" encoding="UTF-8"?>';
+        echo '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
+
+        foreach ($products as $product) {
+            echo '<url>';
+            echo '<loc>http://localhost/index.php?action=show&amp;id=' . $product['id'] . '</loc>';
+            echo '<changefreq>weekly</changefreq>';
+            echo '<priority>0.8</priority>';
+            echo '</url>';
+        }
+        
+        echo '</urlset>';
+        exit;
+
     }
     
     private function render($view, $data = [])
