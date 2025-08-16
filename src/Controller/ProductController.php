@@ -58,6 +58,37 @@ class ProductController
     {
         $categories = $this->repository->findAllCategories();
         $this->render('add_product', ['categories' => $categories]);
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $data = [
+                'name' => $_POST['name'],
+                'description' => $_POST['description'],
+                'price' => $_POST['price'],
+                'category_id' => $_POST['category_id']
+            ];
+
+            $errors = [];
+
+            if ($data['name'] === '') {
+                $errors[] = 'Поле "Название" обязательно для заполнения.';
+            }
+            if ($data['price'] === '' || !is_numeric($data['price']) || $data['price'] <= 0) {
+                $errors[] = 'Поле "Цена" должно быть положительным числом.';
+            }
+            if (empty($errors)) {
+                $this->repository->create($data);
+                header('Location: /index.php?action=list');
+                exit;
+            } else {
+                $categories = $this->repository->findAllCategories();
+                $this->render('add', [
+                    'categories' => $categories,
+                    'errors' => $errors,
+                    'old' => $data
+                ]);
+                return;
+            }
+        }
     }
 
     public function edit($id)

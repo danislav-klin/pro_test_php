@@ -67,6 +67,22 @@ class ProductRepository
             ':category_id' => $data['category_id']
         ]);
     }
+
+    public function create($data) 
+    {
+        $stmt = $this->pdo->prepare("
+            INSERT INTO products (name, description, price, category_id)
+            VALUES (:name, :description, :price, :category_id)
+        ");
+        $stmt->execute([
+            ':name' => $data['name'],
+            ':description' => $data['description'],
+            ':price' => $data['price'],
+            ':category_id' => $data['category_id']
+        ]);
+        
+
+    }
     
 
 }
